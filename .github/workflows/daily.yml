@@ -1,0 +1,29 @@
+name: Tennis Value Bot - Daily
+
+on:
+  schedule:
+    - cron: '0 8 * * *'  # 9:00 hora española (UTC+1)
+  workflow_dispatch:       # permite ejecutarlo manualmente también
+
+jobs:
+  run-daily:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout código
+        uses: actions/checkout@v3
+
+      - name: Configurar Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Instalar librerías
+        run: |
+          pip install pandas requests python-dotenv loguru scikit-learn==1.5.2 xgboost joblib
+
+      - name: Ejecutar pipeline diario
+        env:
+          ODDS_API_KEY: ${{ secrets.ODDS_API_KEY }}
+          EMAIL_PASSWORD: ${{ secrets.EMAIL_PASSWORD }}
+        run: python run_daily.py
