@@ -2,7 +2,7 @@ name: Tennis Value Bot - Daily
 
 on:
   schedule:
-    - cron: '0 8 * * *'  # 9:00 hora española (UTC+1)
+    - cron: '0 7 * * *'  # 9:00 hora española (UTC+1)
   workflow_dispatch:       # permite ejecutarlo manualmente también
 
 jobs:
