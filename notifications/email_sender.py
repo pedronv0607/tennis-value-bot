@@ -42,7 +42,7 @@ def get_bankroll():
     row = cursor.fetchone()
     conn.commit()
     conn.close()
-    return row[0] if row else 90.0
+    return row[0] if row else 20.0
 
 def guardar_bankroll(cantidad):
     """Guarda el bankroll actualizado."""
