@@ -79,6 +79,8 @@ def parsear_y_guardar(partidos, sport_key):
     """)
 
     ahora = datetime.utcnow().isoformat()
+    cursor.execute("DELETE FROM odds_live")
+    conn.commit()
     insertados = 0
 
     for partido in partidos:
