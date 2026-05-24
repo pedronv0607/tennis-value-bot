@@ -134,7 +134,7 @@ def calcular_value_live():
             kelly_h = max(round(((prob_home * cuota_home - 1) / (cuota_home - 1)) * 0.25, 4), 0)
             kelly_a = max(round(((prob_away * cuota_away - 1) / (cuota_away - 1)) * 0.25, 4), 0)
 
-            if edge_h >= 0.07 and prob_home >= 0.55:
+            if edge_h >= 0.10 and prob_home >= 0.65 and pick["cuota"] <= 3.0:
                 value_bets_live.append({
                     "partido":     f"{home} vs {away}",
                     "hora":        hora[:16].replace("T", " "),
@@ -150,7 +150,7 @@ def calcular_value_live():
                     "superficie":  superficie,
                 })
 
-            if edge_a >= 0.07 and prob_away >= 0.55:
+            if edge_a >= 0.10 and prob_away >= 0.65 and cuota_away <= 3.0:
                 value_bets_live.append({
                     "partido":     f"{home} vs {away}",
                     "hora":        hora[:16].replace("T", " "),
