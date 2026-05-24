@@ -21,7 +21,7 @@ def get_picks():
     try:
         df = pd.read_sql("""
             SELECT * FROM value_bets_live
-            ORDER BY edge DESC
+            ORDER BY prob_modelo DESC
         """, conn)
     except:
         df = pd.DataFrame()
