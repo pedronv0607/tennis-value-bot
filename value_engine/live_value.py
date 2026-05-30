@@ -131,28 +131,28 @@ def calcular_value_live():
             edge_a = round(prob_away - p_fair_a, 4)
             ev_h   = round((prob_home * cuota_home) - 1, 4)
             ev_a   = round((prob_away * cuota_away) - 1, 4)
-            kelly_h = max(round(((prob_home * cuota_home - 1) / (cuota_home - 1)) * 0.25, 4), 0)
-            kelly_a = max(round(((prob_away * cuota_away - 1) / (cuota_away - 1)) * 0.25, 4), 0)
+            kelly_h = max(round(((prob_home * cuota_home - 1) / max(cuota_home - 1, 0.01)) * 0.25, 4), 0)
+            kelly_a = max(round(((prob_away * cuota_away - 1) / max(cuota_away - 1, 0.01)) * 0.25, 4), 0)
 
-            if edge_h >= 0.10 and prob_home >= 0.65 and pick["cuota"] <= 3.0:
+            if edge_h >= 0.10 and prob_home >= 0.65 and cuota_home <= 3.0:
                 value_bets_live.append({
-                    "partido":     f"{home} vs {away}",
-                    "hora":        hora[:16].replace("T", " "),
-                    "apostar_a":   home,
-                    "bookmaker":   bookie,
-                    "cuota":       cuota_home,
-                    "prob_modelo": round(prob_home, 4),
-                    "prob_fair":   round(p_fair_h, 4),
-                    "edge":        edge_h,
-                    "ev":          ev_h,
-                    "kelly_%":     round(kelly_h * 100, 2),
-                    "vig_%":       vig,
-                    "superficie":  superficie,
+                    "partido":     str(f"{home} vs {away}"),
+                    "hora":        str(hora[:16]).replace("T", " "),
+                    "apostar_a":   str(home),
+                    "bookmaker":   str(bookie),
+                    "cuota":       float(cuota_home),
+                    "prob_modelo": round(float(prob_home), 4),
+                    "prob_fair":   round(float(p_fair_h), 4),
+                    "edge":        float(edge_h),
+                    "ev":          float(ev_h),
+                    "kelly_%":     round(float(kelly_h) * 100, 2),
+                    "vig_%":       float(vig),
+                    "superficie":  str(superficie),
                 })
 
             if edge_a >= 0.10 and prob_away >= 0.65 and cuota_away <= 3.0:
                 value_bets_live.append({
-                    "partido":     f"{home} vs {away}",
+                    "if edge_h":     f"{home} vs {away}",
                     "hora":        hora[:16].replace("T", " "),
                     "apostar_a":   away,
                     "bookmaker":   bookie,
@@ -175,7 +175,7 @@ def calcular_value_live():
         logger.info("=" * 65)
         for _, r in df_vb.iterrows():
             logger.info(
-                f"{r['partido'][:35]:35s} | "
+                f"{str(r['partido'])[:35]:35s} | "
                 f"Apostar: {r['apostar_a'][:15]:15s} | "
                 f"Cuota: {r['cuota']:5.2f} | "
                 f"Edge: {r['edge']*100:4.1f}% | "
