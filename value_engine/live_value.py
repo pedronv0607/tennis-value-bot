@@ -117,6 +117,8 @@ def calcular_value_live():
 
         for _, row in grupo.iterrows():
             bookie     = row["bookmaker"]
+            if bookie != "bet365":
+                continue
             cuota_home = float(row["odds_home"])
             cuota_away = float(row["odds_away"])
 
@@ -189,6 +191,20 @@ def calcular_value_live():
         conn = sqlite3.connect(DB_PATH)
         df_vb.to_sql("value_bets_live", conn, if_exists="replace", index=False)
         conn.close()
+
+        # Guardar también en Supabase
+        try:
+            from sqlalchemy import create_engine
+            import os
+            from dotenv import load_dotenv
+            load_dotenv(BASE_DIR / ".env")
+            supabase_url = os.getenv("SUPABASE_URL")
+            if supabase_url:
+                engine = create_engine(supabase_url)
+                df_vb.to_sql("value_bets_live", engine, if_exists="replace", index=False)
+                logger.success("Picks guardados en Supabase.")
+        except Exception as e:
+            logger.warning(f"No se pudo guardar en Supabase: {e}")
         logger.success(f"{len(df_vb)} value bets guardadas.")
 
     return value_bets_live
