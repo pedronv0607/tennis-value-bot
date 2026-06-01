@@ -168,7 +168,12 @@ def construir_email_html(picks_df, bankroll):
         </div>
         <div style="background: #1a1a2e; padding: 16px; text-align: center;">
             <p style="margin: 0; color: #666; font-size: 12px;">
-                Tennis Value Bot | Generado automaticamente
+                Tennis Value Bot | Generado automaticamente<br><br>
+                <a href="https://trackerpy-vekld2xfsmfmj2phrzgfvt.streamlit.app" 
+                   style="background:#4CAF50; color:white; padding:12px 24px; 
+                          border-radius:8px; text-decoration:none; font-weight:bold; font-size:16px;">
+                    Registrar resultados
+                </a>
             </p>
         </div>
     </div>
