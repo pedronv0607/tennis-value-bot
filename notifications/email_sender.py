@@ -28,19 +28,17 @@ def get_picks():
     return df
 
 def get_bankroll():
-    conn = sqlite3.connect(DB_PATH)
-    cursor = conn.cursor()
-    cursor.execute("""
-        CREATE TABLE IF NOT EXISTS bankroll (
-            fecha TEXT PRIMARY KEY,
-            cantidad REAL
-        )
-    """)
-    cursor.execute("SELECT cantidad FROM bankroll ORDER BY fecha DESC LIMIT 1")
-    row = cursor.fetchone()
-    conn.commit()
-    conn.close()
-    return row[0] if row else 20.0
+    try:
+        from sqlalchemy import create_engine
+        import os
+        from dotenv import load_dotenv
+        load_dotenv(BASE_DIR / ".env")
+        supabase_url = os.getenv("SUPABASE_URL")
+        engine = create_engine(supabase_url)
+        df = pd.read_sql("SELECT cantidad FROM bankroll ORDER BY fecha DESC LIMIT 1", engine)
+        return float(df.iloc[0]["cantidad"]) if not df.empty else 20.0
+    except:
+        return 20.0
 
 def nivel_confianza(edge, cuota):
     if cuota <= 2.0 and edge >= 0.06:
