@@ -22,31 +22,7 @@ logger.add(
 )
 
 def actualizar_bankroll_mensual():
-    """
-    Añade 90€ al bankroll el día 1 de cada mes.
-    """
-    hoy = datetime.now()
-    if hoy.day != 1:
-        return
-
-    conn = sqlite3.connect(BASE_DIR / "tennis_value_bot.db")
-    cursor = conn.cursor()
-    cursor.execute("""
-        CREATE TABLE IF NOT EXISTS bankroll (
-            fecha TEXT PRIMARY KEY,
-            cantidad REAL
-        )
-    """)
-    cursor.execute("SELECT cantidad FROM bankroll ORDER BY fecha DESC LIMIT 1")
-    row = cursor.fetchone()
-    bankroll_actual = row[0] if row else 0.0
-    nuevo_bankroll  = bankroll_actual + 90.0
-    cursor.execute("""
-        INSERT OR REPLACE INTO bankroll VALUES (?, ?)
-    """, (hoy.strftime("%Y-%m-%d"), nuevo_bankroll))
-    conn.commit()
-    conn.close()
-    logger.success(f"Bankroll actualizado: {nuevo_bankroll:.2f}€ (+90€ mensual)")
+    pass  # Bankroll solo se actualiza desde el tracker
 
 def run():
     logger.info("=" * 50)
@@ -56,8 +32,7 @@ def run():
     # Crear carpeta logs si no existe
     (BASE_DIR / "logs").mkdir(exist_ok=True)
 
-    # Paso 1: actualizar bankroll si es día 1
-    actualizar_bankroll_mensual()
+    # Bankroll gestionado manualmente desde el tracker
 
     # Paso 2: descargar cuotas frescas
     logger.info("Descargando cuotas...")
